@@ -111,4 +111,69 @@ fe_exam_app/
 
 ---
 
+## セキュリティと公開前チェックリスト
+
+- [.env.example] に環境変数の雛形を用意しました。実運用の秘密情報は `.env` にのみ記載し、`.env` はコミットしないでください（`.gitignore` 済み）。
+- 既に `.env` をコミットしてしまった場合は、パスワードやシークレットを即時ローテーションし、Git の履歴から削除してください（後述の手順参照）。
+- `db.js` は `DATABASE_URL` が未設定だと起動時にエラーになります。必ず `.env` を設定してください。
+- `index.js` は `JWT_SECRET` が未設定だと起動時にエラーになります。十分に長くランダムな値を設定してください。
+
+## 環境変数の設定例
+
+`.env.example` を `.env` にコピーして値を設定してください。
+
+```bash
+cp .env.example .env
+# 値をエディタで編集
+```
+
+主要変数:
+- `DATABASE_URL`: `postgresql://<user>:<password>@localhost:5432/fe_exam_app`
+- `JWT_SECRET`: 強力なランダム文字列
+- `PORT`: デフォルトは `5000`
+
+## GitHub への公開手順
+
+1. リポジトリ初期化（済みでない場合）
+   ```bash
+   git init
+   ```
+2. `.env` がコミット対象に含まれていないことを確認
+   ```bash
+   git status
+   ```
+3. 初回コミット
+   ```bash
+   git add .
+   git commit -m "feat: initial commit"
+   ```
+4. GitHub 上で新規リポジトリを作成し、リモートを追加
+   ```bash
+   git remote add origin https://github.com/<your-account>/fe_exam_app.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+## （もし秘密が既にコミットされていたら）履歴からの削除
+
+- 秘密情報（DB パスワード、JWT シークレット）が履歴に含まれている場合は以下を検討:
+  - パスワード・シークレットのローテーション（必須）
+  - 履歴の書き換え（例: `git filter-repo` もしくは BFG Repo-Cleaner）
+
+`git filter-repo` の例（要インストール）:
+```bash
+git filter-repo --path .env --invert-paths
+```
+実行後、強制プッシュ:
+```bash
+git push --force origin main
+```
+
+公開後は GitHub のリポジトリ設定で以下も推奨:
+- Dependabot セキュリティアラートの有効化
+- ブランチ保護ルール（`main` への直接 push を制限）
+- 必要に応じて GitHub Actions のシークレット設定
+
+---
+
 **合格と学習のご成功を心よりお祈り申し上げます。** 

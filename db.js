@@ -2,8 +2,12 @@ require('dotenv').config();
 const { Pool } = require('pg');
 
 // 数据库连接配置
+if (!process.env.DATABASE_URL) {
+  throw new Error('环境变量 DATABASE_URL 未设置。请在项目根目录创建 .env（参考 .env.example）');
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/fe_exam_db',
+  connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 

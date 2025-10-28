@@ -1,8 +1,15 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const pool = require('./db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+// Ensure JWT secret is provided
+if (!process.env.JWT_SECRET) {
+  throw new Error('环境变量 JWT_SECRET 未设置。请在项目根目录的 .env 中配置（参考 .env.example）');
+}
 
 const app = express();
 app.use(cors());
@@ -168,7 +175,7 @@ app.post('/api/login', async (req, res) => {
     
     const token = jwt.sign(
       { userId: user.id, username: user.username }, 
-      process.env.JWT_SECRET || 'your_jwt_secret', 
+      process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
     res.json({ token, username: user.username });
