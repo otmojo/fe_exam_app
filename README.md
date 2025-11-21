@@ -2,6 +2,11 @@
 
 本プロジェクトは、基本情報技術者試験(FE)を対象とした日本語の学習支援アプリです。選択問題の練習、IT用語カード、誤答統計、弱点分析といった機能を備え、試験対策や日常のIT日本語学習にご活用いただけます。
 
+<img src="https://github.com/otmojo/fe_exam_app/raw/main/client/src/fe01.png" alt="FE01" width="800" />
+
+<img src="https://github.com/otmojo/fe_exam_app/raw/main/client/src/fe02.png" alt="FE02" width="800" />
+
+
 ## 主な機能
 - ユーザー管理機能：ユーザー登録、ログイン、自動ログイン機能
 - 問題演習機能：日本語の選択問題、即時採点、解説表示
